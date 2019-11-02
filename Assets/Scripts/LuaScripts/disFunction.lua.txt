@@ -1,0 +1,13 @@
+﻿--解决InvalidOperationException: try to dispose a LuaEnv with C# callback!
+xlua.hotfix(CS.Ef_GooldMove,"Update",nil)
+
+xlua.hotfix(CS.FishAttr,'TakeDamage',nil)
+
+xlua.hotfix(CS.GunFollow,'Update',nil)
+
+xlua.hotfix(CS.SpawnFish,'Start',nil)
+
+xlua.hotfix(CS.SpawnFish,'Spawn',nil)
+
+xlua.hotfix(CS.SpawnFish,'SpawnStraightFish',nil)
+	

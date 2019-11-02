@@ -1,0 +1,99 @@
+﻿--改变金币回收速度
+--self调用的变量需要是在C#中为Public属性
+local CU=CS.UnityEngine
+xlua.hotfix(CS.Ef_GooldMove,'Update',function(self)
+self.transform.position=CS.UnityEngine.Vector3.Lerp(self.transform.position,self.goldCollect.transform.position,4*CS.UnityEngine.Time.deltaTime)
+end)
+
+--**********************************************************
+
+--改变捕鱼方式，应该用概率控制是否能捕到鱼，而不是血量
+xlua.private_accessible(CS.FishAttr)
+xlua.hotfix(CS.FishAttr,'TakeDamage',function(self,value)
+	local catchValue=CU.Mathf.Floor(CU. Random.Range(0,100))
+	if catchValue*10<=500-(self.hp-value*2) then
+		self:Die()
+	end
+end)
+
+--***********************************************************
+--改变枪的旋转方式
+xlua.hotfix(CS.GunFollow,'Update',function(self)
+	local rotateSpeed=2
+	if CU.Input.GetKey(CU.KeyCode.A) then
+		self.transform:Rotate(CU.Vector3.forward*rotateSpeed)
+	end
+	if CU.Input.GetKey(CU.KeyCode.D) then
+		self.transform:Rotate(-CU.Vector3.forward*rotateSpeed)
+	end
+end)
+
+--***********************************************************
+--增加新的鱼
+xlua.private_accessible(CS.SpawnFish)
+local util=require'util'
+util.hotfix_ex(CS.SpawnFish,'Start',function(self)
+		self.Start(self)
+		self.HotFix:LoadResources('银鲨','gameobject\\whiteshark.ab')
+end)
+
+xlua.hotfix(CS.SpawnFish,'Spawn',function(self)
+		self.indexPos = CU.Mathf.Floor(CU.Random.Range(0,self.spawnPositions.Length))
+        self.indexFish = CU.Mathf.Floor(CU.Random.Range(0, self.fishPrefabs.Length+1))	
+		print(self.indexFish)
+		if self.indexFish<17 then
+			self.maxNum = self.fishPrefabs[self.indexFish]:GetComponent('FishAttr').maxNum
+			self.maxSpeed = self.fishPrefabs[self.indexFish]:GetComponent('FishAttr').maxSpeed
+		end
+        self.num = CU.Mathf.Floor(CU.Random.Range(self.maxNum / 2 + 1, self.maxNum))
+        self.speed = CU.Mathf.Floor(CU.Random.Range(self.maxSpeed / 2, self.maxSpeed))
+        moveType = CU.Mathf.Floor(CU.Random.Range(0, 2))--0代表直走，1代表转弯走
+        --if 0 == moveType then
+            --直走, 生成直走的鱼群
+            self.angOffset = CU.Mathf.Floor(CU.Random.Range(-22, 22))
+            self:StartCoroutine(self:SpawnStraightFish(self.indexPos, self.indexFish, self.num, self.speed, self.angOffset))
+       --[[
+        else
+            --转弯，生成转弯的鱼群
+            if CU.Mathf.Floor(CU.Random.Range(0, 2)) == 0 then
+            
+                self.angSpeed=CU.Mathf.Floor(CU.Random.Range(-15, -9))
+            else
+            
+                self.angSpeed=CU.Mathf.Floor(CU.Random.Range(9, 15))
+            end
+            self:StartCoroutine(self:SpawnTurnFish(self.indexPos, self.indexFish, self.num, self.speed, self.angSpeed))
+		--]]
+       -- end
+end)
+
+xlua.hotfix(CS.SpawnFish,{
+	SpawnStraightFish=function(self,indexPos,indexFish,num,speed,angOffset)
+	    return util.cs_generator(function()
+		for i=0,num,1 do
+			if indexFish==17 then
+				print(123)
+				abfish=CS.HotFix.GetGameObject('银鲨')
+				newfish=CU.GameObject.Instantiate(abfish)
+				newfish.transform:SetParent(self.fishHolder, false)
+				newfish.transform.localPosition = self.spawnPositions[indexPos].transform.localPosition
+				newfish.transform.localRotation = self.spawnPositions[indexPos].transform.localRotation
+				newfish:GetComponent('SpriteRenderer').sortingOrder = fish:GetComponent('SpriteRenderer').sortingOrder+(i+1)
+				newfish.transform:Rotate(0,0,angOffset)
+				newfish:AddComponent(typeof(CS.Ef_fishMove)).speed = speed
+				coroutine.yield(CS.UnityEngine.WaitForSeconds(0.8))
+			else
+				fish = CU.GameObject.Instantiate(self.fishPrefabs[indexFish])
+				fish.transform:SetParent(self.fishHolder, false)
+				fish.transform.localPosition = self.spawnPositions[indexPos].transform.localPosition
+				fish.transform.localRotation = self.spawnPositions[indexPos].transform.localRotation
+				fish:GetComponent('SpriteRenderer').sortingOrder = fish:GetComponent('SpriteRenderer').sortingOrder+(i+1)
+				fish.transform:Rotate(0,0,angOffset)
+				fish:AddComponent(typeof(CS.Ef_fishMove)).speed = speed
+				coroutine.yield(CS.UnityEngine.WaitForSeconds(0.8))
+			end
+			--coroutine.yield(self.waitTime)
+		end
+	end)
+  end
+ })

@@ -1,0 +1,56 @@
+ManifestFileVersion: 0
+CRC: 3010782700
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a23c1d096105e8cf7a4518007863d166
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ef4cd9d5be662ea3cd59940e7ae5c631
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 50
+  Script: {instanceID: 0}
+- Class: 61
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 092062940ebfede448537bbce5d1c033, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7e48bec5ccc0e534ab6bd32c45bf0343, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c572fff675e4de449b271100c8c38bfd, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9f2d291d8b397b14fb4d78d74750f9b1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6de3d21f7eb7869438875b998468a84d, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- "Assets/Prefabs/Fish/\u94F6\u9CA8.prefab"
+Dependencies: []

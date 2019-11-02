@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 932599509
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: gameobject/whiteshark.ab
+      Dependencies: {}
